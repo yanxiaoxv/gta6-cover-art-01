@@ -1,106 +1,82 @@
-// Colour grades: the Vice City sunset and neon washes that turn plain photos
-// into poster panels, plus the title-block palette that goes with each one.
-// A grade is applied per panel (a soft colour wash over the photo) and again
-// across the whole cover (the title band and lettering colours).
+// Colour grades for Neon Coast Cover Studio.
+// Each grade carries: a backdrop sky for the snapshot stack, a cycled list of
+// per-panel tint colours, the headline gradient pair, the script subtitle
+// colour, the foot scrim colour, and the saturation / contrast the poster-ink
+// pass leans on. Tints cycle by panel index so one photo spread across a grid
+// still reads as one graded poster.
 
-export const COLOR_GRADES = [
+export const GRADES = [
   {
     id: 'vice-sunset',
     name: 'Vice Sunset',
-    swatch: ['#ff9a3d', '#ff2e88', '#3d1e6d'],
-    washTop: 'rgba(255, 154, 61, 0.10)',
-    washBottom: 'rgba(255, 46, 136, 0.34)',
-    bandTop: '#2a1052',
-    bandMid: '#7a1e5e',
-    bandBottom: '#ff5e3a',
-    titleTop: '#ffffff',
-    titleMid: '#ffd23d',
-    titleBottom: '#ff2e88',
-    accent: '#00e5d4',
+    sky: ['#2a1052', '#7a1e5e', '#e0492f', '#ff9a3d'],
+    tints: ['#ff7a3d', '#ff3d7e', '#7a3dff', '#ffb03d'],
+    titleA: '#ffe259',
+    titleB: '#ff7518',
+    titleEdge: '#5e1030',
     script: '#7df9ff',
-    sunCore: '#ffd23d',
-    sunEdge: '#ff2e88',
+    scrim: 'rgba(24,4,32,0.88)',
+    sat: 1.28,
+    con: 1.14,
   },
   {
     id: 'neon-night',
     name: 'Neon Night',
-    swatch: ['#00e5ff', '#ff2ea6', '#0b1030'],
-    washTop: 'rgba(0, 229, 255, 0.10)',
-    washBottom: 'rgba(255, 46, 166, 0.30)',
-    bandTop: '#05081f',
-    bandMid: '#101d4d',
-    bandBottom: '#3d0a4e',
-    titleTop: '#ffffff',
-    titleMid: '#7df9ff',
-    titleBottom: '#ff2ea6',
-    accent: '#ffe93d',
-    script: '#ff7ad9',
-    sunCore: '#00e5ff',
-    sunEdge: '#ff2ea6',
+    sky: ['#03081e', '#0a1e4a', '#3d0a5e', '#0e4a5e'],
+    tints: ['#00e5ff', '#ff2fb3', '#3151ff', '#00ffa3'],
+    titleA: '#8ef7ff',
+    titleB: '#ff4fd8',
+    titleEdge: '#0a1030',
+    script: '#ffe95e',
+    scrim: 'rgba(2,6,24,0.9)',
+    sat: 1.35,
+    con: 1.18,
   },
   {
     id: 'golden-hour',
     name: 'Golden Hour',
-    swatch: ['#ffc93d', '#ff7a3d', '#5e2a10'],
-    washTop: 'rgba(255, 201, 61, 0.12)',
-    washBottom: 'rgba(255, 110, 40, 0.30)',
-    bandTop: '#33150a',
-    bandMid: '#8a3b12',
-    bandBottom: '#e0641e',
-    titleTop: '#fffbe8',
-    titleMid: '#ffd23d',
-    titleBottom: '#ff7a3d',
-    accent: '#3ddad7',
-    script: '#ffe9a8',
-    sunCore: '#ffe93d',
-    sunEdge: '#ff7a3d',
+    sky: ['#3a1c08', '#8a4416', '#e08a2e', '#ffd76a'],
+    tints: ['#ffb03d', '#ff7a4d', '#c85a2e', '#ffd76a'],
+    titleA: '#fff3b0',
+    titleB: '#ff9a3d',
+    titleEdge: '#4a2408',
+    script: '#ffffff',
+    scrim: 'rgba(32,16,2,0.88)',
+    sat: 1.18,
+    con: 1.08,
   },
   {
     id: 'teal-heat',
     name: 'Teal Heat',
-    swatch: ['#0fd8c2', '#0a6e8a', '#f2e14c'],
-    washTop: 'rgba(15, 216, 194, 0.12)',
-    washBottom: 'rgba(255, 84, 60, 0.26)',
-    bandTop: '#04222e',
-    bandMid: '#0a556e',
-    bandBottom: '#0fd8c2',
-    titleTop: '#ffffff',
-    titleMid: '#b8fff4',
-    titleBottom: '#0fd8c2',
-    accent: '#f2e14c',
-    script: '#f2e14c',
-    sunCore: '#f2e14c',
-    sunEdge: '#0fd8c2',
+    sky: ['#02282e', '#065a5e', '#0e8a7a', '#ffb35c'],
+    tints: ['#0ec8b8', '#ff6b4a', '#0e7ac8', '#ffc44d'],
+    titleA: '#a7fff4',
+    titleB: '#ffb35c',
+    titleEdge: '#06333a',
+    script: '#ff6ec7',
+    scrim: 'rgba(2,26,30,0.88)',
+    sat: 1.3,
+    con: 1.15,
   },
   {
     id: 'midnight-noir',
     name: 'Midnight Noir',
-    swatch: ['#e8e8f0', '#5a5a78', '#0a0a14'],
-    washTop: 'rgba(160, 160, 200, 0.08)',
-    washBottom: 'rgba(10, 10, 30, 0.42)',
-    bandTop: '#06060e',
-    bandMid: '#17172a',
-    bandBottom: '#2e2e4a',
-    titleTop: '#ffffff',
-    titleMid: '#c9c9de',
-    titleBottom: '#7a7a9e',
-    accent: '#ff3d5e',
-    script: '#ff8fa8',
-    sunCore: '#e8e8f0',
-    sunEdge: '#5a5a78',
+    sky: ['#05070c', '#101828', '#1e2c44', '#31435e'],
+    tints: ['#5e7a9e', '#31435e', '#7a8aa5', '#22314a'],
+    titleA: '#ffffff',
+    titleB: '#9fb4c8',
+    titleEdge: '#05070c',
+    script: '#ffd76a',
+    scrim: 'rgba(3,5,10,0.92)',
+    sat: 0.72,
+    con: 1.22,
   },
 ];
 
-export function gradeById(gradeId) {
-  return COLOR_GRADES.find((grade) => grade.id === gradeId) ?? COLOR_GRADES[0];
+export function gradeById(id) {
+  return GRADES.find((g) => g.id === id) || GRADES[0];
 }
 
-// Paints a grade's two-stop wash over one panel rectangle. The caller clips
-// to the panel first, so this simply fills the rect.
-export function applyGradeWashToPanel(ctx, rect, grade) {
-  const wash = ctx.createLinearGradient(0, rect.y, 0, rect.y + rect.h);
-  wash.addColorStop(0, grade.washTop);
-  wash.addColorStop(1, grade.washBottom);
-  ctx.fillStyle = wash;
-  ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
+export function tintForPanel(grade, index) {
+  return grade.tints[index % grade.tints.length];
 }

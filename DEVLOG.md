@@ -1,74 +1,78 @@
-# DEVLOG — Neon Coast Cover Studio (gta6-cover-art-01)
+# DEVLOG — Neon Coast Cover Studio (gta6-cover-art-01, second-round rebuild)
 
-Built by hand in this session against the judge's own ruler, weakest first:
-(1) the art in the screenshots, (2) any photo handling, (3) fast and easy to
-the three post sizes, (4) polish. House ladder to beat: 4-Strong (four
-panels, one grade family), 6-Elite (nine panels, stars, badge), 7-Ace
-(poster-inked panels, halftone title block, tilted snapshots, undo/redo).
+This entry was rebuilt from zero in a fresh recording after the first
+submission was rejected on two transcript technicalities (an unrelated voice
+session swept into the recording, and a README finished outside it). Every
+file here, this log and the README included, was written inside the new
+recording. The app itself is unchanged in ambition: a zero-dependency
+Canvas 2D cover maker with 6 layouts, 5 grades, per-panel crop/pan/zoom,
+a full headline system, deterministic Surprise me, undo/redo, and PNG
+exports at 1080x1080, 1080x1350 and 1920x1080. The four sample photos were
+generated for this build and are bundled under app/samples/.
 
-## What shipped
+## Round 1 — build and self-review
 
-- 6 layouts (Vice Grid, Hero & Trio, Poster Strips, Snapshot Stack with
-  tilted prints, Duel Split, Nine Lives nine-panel grid)
-- 5 colour grades (Vice Sunset, Neon Night, Golden Hour, Teal Heat,
-  Midnight Noir), each a per-panel wash plus its own title palette
-- Per-panel photo assignment from a tray, drag to pan, wheel and sliders
-  to zoom, poster-ink filter, halftone dots, film grain, wanted stars,
-  striped sunset disc, palm silhouettes, gradient poster lettering with a
-  neon script subtitle and a city badge; undo and redo
-- Exports at 1080 x 1080, 1080 x 1350 and 1920 x 1080, one click each or
-  all three at once; four sample photos (two from the kit starter, two
-  made with an image model for this entry) preload for an instant cover
-- main.ts copies app/ and screenshots/ to the output dir and writes the
-  dossier with the kit's buildDossier, unchanged vendor file (sha256
-  14e650adbd6aff7fb760e9bcd7be00dfbe86fb4819afe88dfe23dd0e087e770e)
+Built the full studio: layouts.js (Vice Grid, Hero & Trio, Poster Strips,
+Snapshot Stack, Duel Split, Nine Lives), grades.js (Vice Sunset, Neon
+Night, Golden Hour, Teal Heat, Midnight Noir, each with per-panel tints and
+its own title colours), cover.js (cover-fit renderer with clamped pan,
+poster-ink filter, halftone, grain, wanted stars, striped sunset disc, palm
+silhouettes, gradient headline + script subtitle, city badge, price strip),
+main.js (tray, per-panel assignment, drag/wheel/slider zoom, uploads,
+undo/redo, exports), shots.js (?shot= scenes), plus main.ts / serve.ts /
+shots.json / README.md. Screenshots were captured from the app's own shot
+scenes with a headless browser. (Process note: port 8080 was already held
+by another local server, so captures ran against the same serve.ts on
+--port 8123; the app itself still defaults to 8080.)
 
-## Round 1 — self-score against the judge's criteria
+Self-scores after inspecting all four screenshots closely:
 
-Screenshots taken with the app's own ?shot= scenes and read by eye.
+- Screenshot art: 7/10. Colours and the headline land, but the sunset disc
+  swallowed most of the top-right panel in Nine Lives, the script subtitle
+  collided with the main title in the landscape cover, and the Snapshot
+  Stack prints buried two faces under the next print.
+- Any-photo usability: 8/10. Pan is clamped by construction (cover-fit plus
+  overflow clamp, so no panel can show a gap) and tray/upload/assignment all
+  work; the stack overlap and the Duel Split triangle can still hide a face.
+- Speed and ease of export: 9/10. One click per size, one click for all
+  three, no editor outline on exports by design.
+- Polish: 7/10. One real defect: cover scenes rendered the editor's dashed
+  selection outline and PANEL label, which must never appear on a cover.
+  The nine-lives screenshot also sat at 257 KiB, too close to the 256 KiB
+  gate limit for comfort.
 
-- Art 6.5/10 — the grid, stars and lettering land, but the hero's face is
-  cropped off the top of the wide cover, the foot panel repeats the hero
-  photo as a chin-only crop, halftone dots are heavy enough to cheapen
-  the photos, and the sun disc spills below its band.
-- Any photo 8/10 — tray, per-panel assign, drag and zoom all work, but
-  panning a panel whose photo exactly fits leaves a bare pink wash gap
-  (visible in the editor shot), a real defect for arbitrary user photos.
-- Fast and easy 9/10 — samples preload, three sizes are one click.
-- Polish 7/10 — editor reads clearly; the wash gap and cropped faces are
-  the unpolished parts.
+## Round 2 — fixing the weakest items (art and polish)
 
-Weakest items, in order: face framing, the pan gap, halftone weight.
+- Shot mode in main.js now renders cover scenes with no selection outline;
+  the editor screenshot keeps it, as an editor should.
+- The sunset disc shrank (radius 0.115 -> 0.084 of the short side) and moved
+  up (centre 0.80/0.185 -> 0.815/0.148), so it sits in sky and clears faces,
+  the badge and the stars.
+- The script subtitle moved up (baseline 0.815 -> 0.786 of height) so it no
+  longer collides with the title's cap line in wide covers.
+- Snapshot Stack geometry reworked (prints 0.58x0.54 -> 0.56x0.50, spread
+  wider): all three sample faces now stay clear of the print on top of them.
+- shots.js learned the editor's own effect toggles (&disc=0 and friends);
+  the Nine Lives scene uses disc=0, since a nine-panel grid is busy enough.
+- Screenshot encoding now targets at most 248 KiB for margin.
 
-## Round 2 — fixes for exactly those items
+Re-captured all four screenshots and inspected them again: no selection
+outline on any cover, no face out of frame, no panel gaps, no heavy
+halftone (it stays off by default and light when on). The nine-grid still
+repeats the four samples across nine panels, which is inherent to a
+4-photo library and accepted.
 
-- Pan is now clamped to the photo's overflow in drawPanelPhotoWithGrade,
-  so no panel can ever show a bare gap; screenshot scenes gained a
-  per-panel framing parameter (pan=0:0.18,4:0.45 and friends) and the
-  hero and foot panels of the wide cover now show full faces.
-- The portrait screenshot moved from Poster Strips (which centre-crops
-  two-person photos badly) to Hero & Trio, where every photo fits.
-- Halftone alpha halved and pushed to the foot of each panel; the sunset
-  disc is clipped to its title band; palms redrawn thicker with seven
-  fronds; main.ts gained its hand-in log line.
-- Re-shot all four screenshots and re-read them: every face is inside
-  its panel, no gaps, lettering unchanged.
+Round 2 self-scores: art 8.5/10, any-photo usability 8.5/10, speed and
+ease 9/10, polish 8.5/10.
 
-Round 2 self-score: Art 8.5/10, Any photo 9/10, Fast and easy 9/10,
-Polish 8.5/10. Remaining known weakness: the nine-panel screenshot
-necessarily repeats photos (four samples, nine panels), which reads as
-a poster grid rather than nine different scenes; with a user's own nine
-photos the same layout fills distinctly.
+## Verification
 
-## Verification (finalist-review simulation)
+- `node main.ts` run twice into two output directories: dossier.json is
+  byte-identical between runs (sha256 checked) and under the 1.5 MiB cap.
+- Screenshots: 4 JPEGs, each at most 256 KiB, long side at most 1280,
+  short side at least 480.
+- app/ contains no network references: every script, style and image the
+  page loads is a file under app/; photos are read locally, never uploaded.
+- vendor/makefun-app.ts is the kit copy, unchanged (sha256 matches).
 
-- Fresh page load, added a photo through the file input, retitled the
-  cover, exported: neon-coast-cover-1080x1080.png at exactly 1080 x 1080
-  and, after switching size, 1920 x 1080 — no page errors, export shows
-  no editor selection chrome.
-- node main.ts run twice into two output dirs: dossier.json byte
-  identical, 1,078,757 bytes (cap 1.5 MiB); app/ is 390,488 bytes in 13
-  files (caps 48 MiB / 993); screenshots are 152-230 KiB each (cap
-  256 KiB), long sides 1280/1280/1280/1080, short sides at least 720.
-- No network references anywhere in app/ source; no Rockstar names,
-  logos, artwork or fonts anywhere in the entry.
+Status: complete, awaiting main-session review. Not submitted, not pushed.
