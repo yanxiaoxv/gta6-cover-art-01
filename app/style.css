@@ -1,0 +1,128 @@
+/* Neon Coast Cover Studio — a dark, neon editor shell around the canvas. */
+:root {
+  --bg: #0d0718;
+  --panel: #1a1030;
+  --panel-edge: #3a2364;
+  --text: #f5f0ff;
+  --muted: #b9a8d9;
+  --accent: #ff2e88;
+  --accent-2: #00e5d4;
+  --gold: #ffd23d;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: radial-gradient(1200px 700px at 85% -10%, #4a1458 0%, var(--bg) 55%) fixed, var(--bg);
+  color: var(--text);
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+.studio {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 18px;
+  padding: 18px;
+  min-height: 100vh;
+}
+
+.panel.controls {
+  background: rgba(26, 16, 48, 0.92);
+  border: 1px solid var(--panel-edge);
+  border-radius: 16px;
+  padding: 18px;
+  overflow-y: auto;
+  max-height: calc(100vh - 36px);
+}
+
+.brand-kicker {
+  margin: 0 0 4px;
+  color: var(--accent-2);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+}
+
+.brand h1 {
+  margin: 0;
+  font-family: "Arial Black", Impact, sans-serif;
+  font-size: 30px;
+  line-height: 1.04;
+  background: linear-gradient(180deg, #fff 20%, var(--gold) 55%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.brand-sub { color: var(--muted); font-size: 13px; line-height: 1.45; }
+
+.group { border-top: 1px solid var(--panel-edge); padding: 13px 0 5px; }
+.group h2 { margin: 0 0 10px; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
+.group label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 9px; }
+.group input[type="text"] {
+  width: 100%; margin-top: 4px; padding: 9px 10px; border-radius: 9px;
+  border: 1px solid var(--panel-edge); background: #0d0718; color: var(--text); font-size: 15px;
+}
+.group input[type="range"] { width: 100%; accent-color: var(--accent); }
+
+.drop {
+  display: block; border: 2px dashed var(--accent); border-radius: 12px;
+  padding: 16px 10px; text-align: center; cursor: pointer; color: var(--text) !important;
+  background: rgba(255, 46, 136, 0.08); font-size: 14px !important;
+}
+.drop.dragging { background: rgba(0, 229, 212, 0.16); border-color: var(--accent-2); }
+.drop input { display: none; }
+
+.tray { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.tray button {
+  padding: 0; border: 2px solid transparent; border-radius: 9px; overflow: hidden;
+  width: 62px; height: 62px; cursor: pointer; background: #000;
+}
+.tray button.active { border-color: var(--accent-2); }
+.tray img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.hint, .stage-hint { color: var(--muted); font-size: 12px; line-height: 1.5; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 8px; }
+.chips button {
+  border: 1px solid var(--panel-edge); background: #0d0718; color: var(--text);
+  border-radius: 999px; padding: 7px 12px; font-size: 13px; cursor: pointer;
+}
+.chips button.active { background: var(--accent); border-color: var(--accent); font-weight: 700; }
+.chips button .sw { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
+
+.toggles { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 8px 0; }
+.toggles label { display: flex; gap: 6px; align-items: center; margin: 0; color: var(--text); }
+.toggles input { accent-color: var(--accent-2); }
+
+button.export {
+  width: 100%; padding: 14px; border: 0; border-radius: 12px; cursor: pointer;
+  font-size: 17px; font-weight: 800; color: #fff;
+  background: linear-gradient(90deg, var(--accent), #ff7a3d);
+  box-shadow: 0 6px 24px rgba(255, 46, 136, 0.4);
+}
+button.ghost {
+  width: 100%; padding: 10px; margin-top: 8px; border-radius: 10px; cursor: pointer;
+  border: 1px solid var(--panel-edge); background: transparent; color: var(--text); font-size: 14px;
+}
+#exportStatus { color: var(--accent-2); font-size: 13px; min-height: 18px; }
+
+.stage { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+.stage canvas {
+  max-width: min(100%, calc((100vh - 90px) * 1.6));
+  max-height: calc(100vh - 90px);
+  width: auto; height: auto;
+  border-radius: 6px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.65);
+  cursor: grab;
+  touch-action: none;
+}
+.stage canvas:active { cursor: grabbing; }
+
+/* Screenshot scenes: ?shot=cover shows only the cover, full frame. */
+body.shot-cover .panel.controls, body.shot-cover .stage-hint { display: none; }
+body.shot-cover .studio { display: block; padding: 0; }
+body.shot-cover .stage { height: 100vh; }
+body.shot-cover .stage canvas { width: 100vw !important; height: 100vh !important; max-width: none; max-height: none; border-radius: 0; box-shadow: none; }
+body.shot-editor .studio { padding: 10px; }

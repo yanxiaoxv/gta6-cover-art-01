@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Neon Coast Cover Studio — GTA-Style Cover Art Maker</title>
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<main class="studio">
+  <aside class="panel controls">
+    <header class="brand">
+      <p class="brand-kicker">VICE COAST • COVER STUDIO</p>
+      <h1>Neon Coast<br>Cover Studio</h1>
+      <p class="brand-sub">Your photos + one line of attitude = a GTA-style poster cover. Everything runs on this machine — photos never leave it.</p>
+    </header>
+
+    <section class="group">
+      <h2>1 · Photos</h2>
+      <label class="drop" id="photoDrop">
+        <input id="photoInput" type="file" accept="image/*" multiple>
+        <span>Drop photos here or click to add yours</span>
+      </label>
+      <div class="tray" id="photoTray" aria-label="Photo tray"></div>
+      <p class="hint">Click a panel on the cover, then click a photo to put it in that panel. Drag inside a panel to reposition, scroll to zoom.</p>
+    </section>
+
+    <section class="group">
+      <h2>2 · Words</h2>
+      <label>Cover title <input id="titleInput" type="text" maxlength="22" value="NEON COAST"></label>
+      <label>Script subtitle <input id="subtitleInput" type="text" maxlength="30" value="Vice Nights"></label>
+      <label>Top line <input id="taglineInput" type="text" maxlength="42" value="One city. Five stories. No brakes."></label>
+    </section>
+
+    <section class="group">
+      <h2>3 · Layout</h2>
+      <div class="chips" id="layoutList"></div>
+    </section>
+
+    <section class="group">
+      <h2>4 · Colour grade</h2>
+      <div class="chips" id="gradeList"></div>
+    </section>
+
+    <section class="group">
+      <h2>5 · Panel framing</h2>
+      <label>Zoom <input id="zoomRange" type="range" min="1" max="2.6" step="0.01" value="1"></label>
+      <label>Pan across <input id="panXRange" type="range" min="-0.45" max="0.45" step="0.01" value="0"></label>
+      <label>Pan up / down <input id="panYRange" type="range" min="-0.45" max="0.45" step="0.01" value="0"></label>
+      <div class="toggles">
+        <label><input id="inkToggle" type="checkbox" checked> Poster ink</label>
+        <label><input id="halftoneToggle" type="checkbox" checked> Halftone</label>
+        <label><input id="grainToggle" type="checkbox" checked> Film grain</label>
+        <label><input id="starsToggle" type="checkbox" checked> Wanted stars</label>
+        <label><input id="badgeToggle" type="checkbox" checked> City badge</label>
+      </div>
+      <button id="shuffleButton" type="button" class="ghost">Shuffle photos across panels</button>
+      <button id="undoButton" type="button" class="ghost">Undo</button>
+      <button id="redoButton" type="button" class="ghost">Redo</button>
+    </section>
+
+    <section class="group">
+      <h2>6 · Export</h2>
+      <div class="chips" id="sizeList"></div>
+      <button id="exportPngButton" type="button" class="export">Export PNG</button>
+      <button id="exportAllButton" type="button" class="ghost">Export all 3 sizes</button>
+      <p id="exportStatus" role="status"></p>
+    </section>
+  </aside>
+
+  <section class="stage">
+    <canvas id="coverCanvas" width="1080" height="1080" aria-label="Live cover preview"></canvas>
+    <p class="stage-hint">Live preview — the exported PNG is exactly what you see, at full size.</p>
+  </section>
+</main>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
